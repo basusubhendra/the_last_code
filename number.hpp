@@ -10,8 +10,8 @@ class Number {
 		short int r2lstate;
 		enum state_relation relation;
 		bool isFinished_b;
-                enum state_relation updateStateRelation();
-		bool updateFinishedStatus();
+                void updateStateRelation();
+		void updateFinishedStatus();
 	public:
                 Number(char*);
 		short int getL2RState();
@@ -27,6 +27,7 @@ Number::Number(char* s) {
 	this->l = strlen(this->value);
 	this->isFinished_b = false;
 	this->relation = nan;
+	this->l2rstate = this->r2lstate = 0;
 }
 
 short int Number::getL2RState() {
@@ -63,7 +64,7 @@ void Number::updateStateRelation() {
 }
 
 void Number::updateFinishedStatus() {
-	if (this->l2rstate + this->r2lstate + 1 + 1 == this->l) {
+	if (this->l2rstate == this->r2lstate) {
 		this->isFinished_b = true;
 	}
 }
