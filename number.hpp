@@ -64,7 +64,7 @@ void Number::updateStateRelation() {
 }
 
 void Number::updateFinishedStatus() {
-	if (this->l2rstate == this->r2lstate) {
+	if (this->l2rstate + this->r2lstate + 1 + 1 > this->l) {
 		this->isFinished_b = true;
 	}
 }
