@@ -67,18 +67,24 @@ void Engine::run1Step() {
 	     if (left_match == l2r_digit && left_match == r2l_digit) {
 		     this->last_snippet = snippet;
 		     this->polarity = 2;
+		     this->num->incrementL2RState();
+		     this->num->incrementR2LState();
 		     break;
 	     } else if (right_match == l2r_digit && right_match == r2l_digit) {
 		     this->last_snippet = snippet;
 		     this->polarity = 2;
+		     this->num->incrementL2RState();
+		     this->num->incrementR2LState();
 		     break;
 	     } else if (left_match == l2r_digit) {
 		     this->last_snippet = snippet;
 		     this->polarity = 0;
+		     this->num->incrementL2RState();
 		     break;
 	     } else if (right_match == r2l_digit) {
 		     this->last_snippet = snippet;
 		     this->polarity = 1;
+		     this->num->incrementR2LState();
 		     break;
 	     }
      }
