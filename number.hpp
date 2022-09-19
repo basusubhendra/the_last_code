@@ -27,8 +27,8 @@ Number::Number(char* s) {
 	this->value = s;
 	this->l = strlen(this->value);
 	this->isFinished_b = false;
-	this->relation = _nan_;
 	this->l2rstate = this->r2lstate = 0;
+	this->relation = _deriveStateRelation_(this->getL2RDigit(), this->getR2LDigit());
 }
 
 short int Number::getL2RState() {
@@ -52,7 +52,8 @@ void Number::incrementR2LState() {
 }
 
 void Number::updateStateRelation() {
-	this->relation = _deriveStateRelation_(this->l2rstate, this->r2lstate);
+	this->relation = _deriveStateRelation_(this->getL2RDigit(), this->getR2LDigit());
+	cout << "State Relation updated to " << this->relation << endl;
 	return;
 }
 
@@ -71,7 +72,7 @@ short int Number::getL2RDigit() {
 }
 
 short int Number::getR2LDigit() {
-	return this->value[this->getR2LState()] - '0';
+	return this->value[this->l - 1 - this->getR2LState()] - '0';
 }
 
 short int Number::getStateRelation() {

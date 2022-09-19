@@ -10,7 +10,7 @@ class Engine {
               std::string last_snippet;           
 	public:
 	      Engine(Number*, pi_e_engine*);
-	      bool getPolarity();
+	      short int getPolarity();
 	      std::string getLastSnippet();
 	      bool getFinishedStatus();
 	      void run1Step();
@@ -23,18 +23,8 @@ Engine::Engine(Number* obj, pi_e_engine* _pie_) {
 	this->last_snippet = "";
 }
 
-bool Engine::getPolarity() {
-	switch (polarity) {
-		case 0:
-			return false;
-		case 1:
-			return true;
-		case -1:
-			cout << "Unusual command detected" << endl;
-			exit(1);
-			break;
-	}
-	return false;
+short int Engine::getPolarity() {
+	return this->polarity;
 }
 
 std::string Engine::getLastSnippet() {
@@ -50,6 +40,8 @@ void Engine::run1Step() {
      ///TBD: Actual engine code comes here
      std::string snippet = "";
      int accumulator = 0;
+     short int l2r_digit = this->num->getL2RDigit();
+     short int r2l_digit = this->num->getR2LDigit();
      while (1) {
 	     //Compose snippet until l2r match (higher factor) or r2l match (lower factor). 
 	     short int left_match = -1, right_match = -1;
@@ -62,29 +54,25 @@ void Engine::run1Step() {
 		     snippet += boost::lexical_cast<std::string>(accumulator);
 		     accumulator = 1;
 	     }
-	     short int l2r_digit = this->num->getL2RDigit();
-	     short int r2l_digit = this->num->getR2LDigit();
 	     if (left_match == l2r_digit && left_match == r2l_digit) {
+		     snippet += boost::lexical_cast<std::string>(accumulator);
 		     this->last_snippet = snippet;
 		     this->polarity = 2;
-		     this->num->incrementL2RState();
-		     this->num->incrementR2LState();
 		     break;
 	     } else if (right_match == l2r_digit && right_match == r2l_digit) {
+		     snippet += boost::lexical_cast<std::string>(accumulator);
 		     this->last_snippet = snippet;
 		     this->polarity = 2;
-		     this->num->incrementL2RState();
-		     this->num->incrementR2LState();
 		     break;
-	     } else if (left_match == l2r_digit) {
+	     } else if (left_match == r2l_digit) {
+		     snippet += boost::lexical_cast<std::string>(accumulator);
 		     this->last_snippet = snippet;
 		     this->polarity = 0;
-		     this->num->incrementL2RState();
 		     break;
-	     } else if (right_match == r2l_digit) {
+	     } else if (right_match == l2r_digit) {
+		     snippet += boost::lexical_cast<std::string>(accumulator);
 		     this->last_snippet = snippet;
 		     this->polarity = 1;
-		     this->num->incrementR2LState();
 		     break;
 	     }
      }

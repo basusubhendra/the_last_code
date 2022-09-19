@@ -11,16 +11,24 @@ int main(int argc, char* argv[]) {
 	std::string higher_factor = "";
 	while (!engine->getFinishedStatus()) {
 		engine->run1Step();
-		bool polarity = engine->getPolarity();
+		short int polarity = engine->getPolarity();
 		std::string snippet = engine->getLastSnippet();
-		cout << snippet << endl;
+		cout << "Snippet = " << snippet << endl;
 		system("a=1;read a");
 		switch (polarity) {
 			case 0:
 				lower_factor += snippet;
+				num_obj->incrementR2LState();
 		                break;
 			case 1:
 				higher_factor += snippet;
+				num_obj->incrementL2RState();
+				break;
+			case 2:
+				lower_factor += snippet;
+				higher_factor += snippet;
+				num_obj->incrementL2RState();
+				num_obj->incrementR2LState();
 				break;
 		}
 	}
