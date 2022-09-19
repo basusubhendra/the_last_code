@@ -1,7 +1,6 @@
 #ifndef _NUMBER_
 #define _NUMBER_
 #include "common.hpp"
-enum state_relation { _equal_, _lt_, _gt_, _nan_ };
 class Number {
 	private:
 		char* value;
@@ -53,15 +52,7 @@ void Number::incrementR2LState() {
 }
 
 void Number::updateStateRelation() {
-	if (this->r2lstate == 0 || this->l2rstate == 0) {
-		this->relation = _nan_;
-	} else if (this->r2lstate == this->l2rstate) {
-		this->relation = _equal_;
-	} else if (this->l2rstate < this->r2lstate) {
-	       this->relation = _lt_;
-	} else if (this->l2rstate > this->r2lstate) {
-	       this->relation = _gt_;
-	}
+	this->relation = _deriveStateRelation_(this->l2rstate, this->r2lstate);
 	return;
 }
 
@@ -69,22 +60,6 @@ void Number::updateFinishedStatus() {
 	if (this->l2rstate + this->r2lstate + 1 + 1 > this->l) {
 		this->isFinished_b = true;
 	}
-}
-
-short int Number::getStateRelation() {
-	switch (this->relation) {
-		case _equal_: 
-		       return 0;
-	        case _lt_:
-	               return 1;	
-		case _gt_:
-		       return 2;
-		case _nan_:
-		       return 3;
-		default:
-		       break;
-	}
-        return -1;
 }
 
 bool Number::getFinishedStatus() {
@@ -99,4 +74,7 @@ short int Number::getR2LDigit() {
 	return this->value[this->getR2LState()] - '0';
 }
 
+short int Number::getStateRelation() {
+	return _getStateRelation_(this->relation);
+}
 #endif

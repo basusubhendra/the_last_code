@@ -46,14 +46,14 @@ bool Engine::getFinishedStatus() {
 }
 
 void Engine::run1Step() {
-     short int rel = this->num->getStateRelation();
+     short int relation = this->num->getStateRelation();
      ///TBD: Actual engine code comes here
      std::string snippet = "";
      int accumulator = 0;
      while (1) {
 	     //Compose snippet until l2r match (higher factor) or r2l match (lower factor). 
 	     short int left_match = -1, right_match = -1;
-	     this->pie->run_micro_step(left_match, right_match);
+	     this->pie->run_micro_step(relation, left_match, right_match);
 	     if ((left_match == -1 && right_match > -1) || (left_match > -1 && right_match == -1)) {
 		     accumulator++;
 	     } else if (left_match == -1 && right_match == -1) {
