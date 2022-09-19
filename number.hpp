@@ -1,7 +1,7 @@
 #ifndef _NUMBER_
 #define _NUMBER_
 #include "common.hpp"
-enum state_relation { equal, lt, gt, nan };
+enum state_relation { _equal_, _lt_, _gt_, _nan_ };
 class Number {
 	private:
 		char* value;
@@ -16,6 +16,8 @@ class Number {
                 Number(char*);
 		short int getL2RState();
 		short int getR2LState();
+		short int getL2RDigit();
+		short int getR2LDigit();
 		void incrementL2RState();
 		void incrementR2LState();
 		short int getStateRelation();
@@ -26,7 +28,7 @@ Number::Number(char* s) {
 	this->value = s;
 	this->l = strlen(this->value);
 	this->isFinished_b = false;
-	this->relation = nan;
+	this->relation = _nan_;
 	this->l2rstate = this->r2lstate = 0;
 }
 
@@ -52,13 +54,13 @@ void Number::incrementR2LState() {
 
 void Number::updateStateRelation() {
 	if (this->r2lstate == 0 || this->l2rstate == 0) {
-		this->relation = nan;
+		this->relation = _nan_;
 	} else if (this->r2lstate == this->l2rstate) {
-		this->relation = equal;
+		this->relation = _equal_;
 	} else if (this->l2rstate < this->r2lstate) {
-	       this->relation = lt;
+	       this->relation = _lt_;
 	} else if (this->l2rstate > this->r2lstate) {
-	       this->relation = gt;
+	       this->relation = _gt_;
 	}
 	return;
 }
@@ -71,13 +73,13 @@ void Number::updateFinishedStatus() {
 
 short int Number::getStateRelation() {
 	switch (this->relation) {
-		case equal: 
+		case _equal_: 
 		       return 0;
-	        case lt:
+	        case _lt_:
 	               return 1;	
-		case gt:
+		case _gt_:
 		       return 2;
-		case nan:
+		case _nan_:
 		       return 3;
 		default:
 		       break;
@@ -88,4 +90,13 @@ short int Number::getStateRelation() {
 bool Number::getFinishedStatus() {
 	return this->isFinished_b;
 }
+
+short int Number::getL2RDigit() {
+	return this->value[this->getL2RState()] - '0';
+}
+
+short int Number::getR2LDigit() {
+	return this->value[this->getR2LState()] - '0';
+}
+
 #endif
