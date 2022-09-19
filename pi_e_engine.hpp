@@ -10,8 +10,8 @@ class pi_e_engine {
 		short int last_disambiguated;
 	public:
 		pi_e_engine() {
-                     this->pi = pi;
-		     this->e = e;
+                     this->pi = const_cast<char*>(_pi_);
+		     this->e = const_cast<char*>(_e_);
 		     this->last_offset = 0;
 		}
 		void run_micro_step(short int, short int& left, short int& right);
