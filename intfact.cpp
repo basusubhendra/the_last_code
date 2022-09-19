@@ -13,6 +13,8 @@ int main(int argc, char* argv[]) {
 		engine->run1Step();
 		bool polarity = engine->getPolarity();
 		std::string snippet = engine->getLastSnippet();
+		cout << snippet << endl;
+		system("a=1;read a");
 		switch (polarity) {
 			case 0:
 				lower_factor += snippet;
