@@ -5,13 +5,11 @@ class Adapter {
 	private:
 		char* num;
 		unsigned long l;
-		unsigned long mid;
 		std::string b_str;
 		std::string reverse_of_b_str;
 	public:
 		Adapter(char* num);
 		void convert();
-		unsigned long getMidPoint();
 		std::string getBinary();
 		std::string getReverseBinary();
 		~Adapter();
@@ -20,11 +18,6 @@ class Adapter {
 Adapter::Adapter(char* s) {
 	this->num = strdup(s);
 	this->l = strlen(s);
-	this->mid = ceil(this->l / 2.0);
-}
-
-unsigned long Adapter::getMidPoint() {
-	return this->mid;
 }
 
 void Adapter::convert() {

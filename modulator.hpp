@@ -8,7 +8,6 @@ class Modulator {
 	private:
 		char* num;
 		unsigned long long int l;
-		unsigned long long int mid;
 		std::string binary_string1;
 		std::string binary_string2;
 		const char* modulation_strategy1;
@@ -16,16 +15,15 @@ class Modulator {
 		std::string factor1;
 		std::string factor2;
 	public:
-		Modulator(char*, unsigned long m, std::string, std::string, const char*, const char*);
+		Modulator(char*, std::string, std::string, const char*, const char*);
 		void run();
 		std::string getFactor1();
 		std::string getFactor2();
 };
 
-Modulator::Modulator(char* s, unsigned long m, std::string _bin_, std::string _r_bin_, const char* pp, const char* ee) {
+Modulator::Modulator(char* s, std::string _bin_, std::string _r_bin_, const char* pp, const char* ee) {
 	this->num = strdup(s);
 	this->l = strlen(s);
-	this->mid = m;
 	this->binary_string1 = _bin_;
 	this->binary_string2 = _r_bin_;
 	this->modulation_strategy1 = pp;
@@ -38,36 +36,29 @@ void Modulator::run() {
 	unsigned long reverse_number_index = 0;
 	std::string _factor1_ = "";
 	std::string _factor2_ = "";
-	unsigned long accumulator = 0;
-	while (reverse_number_index < this->binary_string1.size()) {
+	unsigned long accumulator_1_ = 0;
+	unsigned long accumulator_0_ = 0;
+	while (1) {
 		short int pp1 = modulation_strategy1[ctr] - '0';
 		short int pp2 = modulation_strategy1[ctr + 1] - '0';
 		short int ee1 = modulation_strategy2[ctr] - '0';
 		short int ee2 = modulation_strategy2[ctr + 1] - '0';
 		short int relation1 = _getStateRelation_(_deriveStateRelation_(pp1, pp2));
 		short int relation2 = _getStateRelation_(_deriveStateRelation_(ee1, ee2));
-		if (reverse_number_index < this->mid) {
-			if ((relation1 / (relation2*1.0)) == 0.5) {
-				if (this->binary_string1[number_index++] == '1') {
-					++accumulator;
-				}
-			} else if ((relation2 / (relation1*1.0)) == 0.5) {
-				_factor1_ += _bin_(accumulator);
-				accumulator = 0;
-				reverse_number_index++;
+		if (relation1 == 1 && relation2 == 2) {
+			if (this->binary_string1[number_index++] == '1') {
+				++accumulator_1_;
+				++accumulator_0_;
 			}
-		} else {
-			if ((relation2 / (relation1*1.0)) == 0.5) {
-				if (this->binary_string2[reverse_number_index] == '1') {
-					++accumulator;
-				}
-				reverse_number_index++;
-
-			} else if ((relation1 / (relation2*1.0)) == 0.5) {
-				_factor2_ += _bin_(accumulator);
-				accumulator = 0;
-				number_index++;
+		} else if (relation2 == 1 && relation1 == 2) {
+			if (this->binary_string2[reverse_number_index] == '0') {
+				_factor2_ += _bin_(accumulator_0_);
+				accumulator_0_ = 0;
+			} else {
+				_factor1_ += _bin_(accumulator_1_);
+				accumulator_1_ = 0;
 			}
+			reverse_number_index++;
 		}
 		ctr += 2;
 	}
