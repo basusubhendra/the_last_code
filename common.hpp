@@ -11,10 +11,12 @@
 #include <gmp.h>
 using namespace std;
 using namespace boost;
-enum state_relation { _equal_, _lt_, _gt_, _nan_ };
+enum state_relation { _equal_, _lt_, _gt_, _nan_1_, _nan_2_ };
 enum state_relation _deriveStateRelation_(short int x, short int y) {
-	if (x == 0 || y == 0) {
-	       return _nan_;
+	if (x == 0) {
+	       return _nan_1_;
+	} else if (y == 0) {
+	       return _nan_2_;
 	} else if (x == y) {
 	       return _equal_;
 	} else if (x < y) {
@@ -22,7 +24,6 @@ enum state_relation _deriveStateRelation_(short int x, short int y) {
 	} else if (x > y) {
 	       return _gt_;
 	}
-	return _nan_;
 }
 
 short int _getStateRelation_(enum state_relation relation) {
@@ -33,8 +34,10 @@ short int _getStateRelation_(enum state_relation relation) {
 	               return 1;	
 		case _gt_:
 		       return 2;
-		case _nan_:
+		case _nan_1_:
 		       return 3;
+		case _nan_2_:
+		       return 4;
 		default:
 		       break;
 	}

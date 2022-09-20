@@ -11,20 +11,18 @@ class Modulator {
 		vector<short int>* native_states;
 		const char* modulation_strategy;
 		std::string last_snippet;
-		short int parity;
 		unsigned long long int index;
 	public:
-		Modulator(char*, vector<short int>*, const char*, short int);
+		Modulator(char*, vector<short int>*, const char*);
 		void run_micro_step();
 		std::string get_last_snippet();
 };
 
-Modulator::Modulator(char* s, vector<short int>* states, const char* p, short int pty) {
+Modulator::Modulator(char* s, vector<short int>* states, const char* p) {
 	this->num = strdup(s);
 	this->l = strlen(s);
 	this->native_states = states;
 	this->modulation_strategy = p;
-	this->parity = pty;
 	this->index = 0;
 }
 
@@ -38,30 +36,22 @@ void Modulator::run_micro_step() {
 		short int pp2 = modulation_strategy[this->index + 1] - '0';
 		short int relation = _getStateRelation_(_deriveStateRelation_(pp1, pp2));
 		if (relation == native_states->at(ctr % this->l)) {
-			if ((this->parity == 1 && state == 1 && intervening_counter > 0) || (this->parity == 0 && state == 1 && intervening_counter == 0)) {
+			if (state == 1 && intervening_counter == 0) {
 				this->last_snippet = _bin_(interval);
 				intervening_counter = 0;
 				state = 0;
-				if (parity == 1) {
-					++interval;
-				} else {
 					return;
-				}
-			} else if ((this->parity == 1 && state == 1 && intervening_counter == 0) || (this->parity == 0 && state == 1 && intervening_counter > 0)) {
+			} else if (state == 1 && intervening_counter > 0) {
 				intervening_counter = 0;
 				state = 0;
-				if (parity == 0) {
 					++interval;
-				} else {
-					return;
-				}
 			}
 			++ctr;
 			if (ctr == this->l) {
 				state = 1;
 				ctr = 0;
 			}
-		} else if (relation != 3 && state == 1) {
+		} else if (state == 1) {
 			intervening_counter++;
 		}
 		index += 2;
