@@ -46,17 +46,34 @@ void Modulator::run() {
 		short int relation1 = _getStateRelation_(_deriveStateRelation_(pp1, pp2));
 		short int relation2 = _getStateRelation_(_deriveStateRelation_(ee1, ee2));
 		if (relation1 == 1 && relation2 == 2) {
-			if (this->binary_string1[number_index % this->binary_string1.size()] == '1') {
+			if (this->binary_string1[number_index] == '1') {
 				++accumulator_1_;
+			} else {
 				++accumulator_0_;
 			}
 			++number_index;
+		} else if (relation1 == 2 && relation2 == 4) {
+			if (this->binary_string1[number_index] == '1') {
+				accumulator_1_ += 2;
+			} else {
+				accumulator_0_ += 2;
+			}
+			++number_index;
 		} else if (relation2 == 1 && relation1 == 2) {
-			if (this->binary_string2[reverse_number_index % this->binary_string2.size()] == '0') {
+			if (this->binary_string2[reverse_number_index] == '0') {
 				_factor2_ += _bin_(accumulator_0_);
 				accumulator_0_ = 0;
 			} else {
 				_factor1_ += _bin_(accumulator_1_);
+				accumulator_1_ = 0;
+			}
+			reverse_number_index++;
+		} else if (relation2 == 2 && relation1 == 4) {
+			if (this->binary_string2[reverse_number_index] == '0') {
+				_factor2_ = _bin_(atoi(strdup(_int_(_factor2_).c_str())) + accumulator_0_);
+				accumulator_0_ = 0;
+			} else {
+				_factor1_ = _bin_(atoi(strdup(_int_(_factor1_).c_str())) + accumulator_1_);
 				accumulator_1_ = 0;
 			}
 			reverse_number_index++;
