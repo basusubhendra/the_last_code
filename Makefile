@@ -2,7 +2,7 @@ PROD = -Ofast
 DEBUG = -g
 CC = g++
 INCLUDES = -I./
-LIBS = -lgmp
+LIBS = -lgmp -lm
 
 .PHONY: all debug clean
 

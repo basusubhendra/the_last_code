@@ -1,37 +1,46 @@
 #ifndef _ADAPTER_
 #define _ADAPTER_
 #include "common.hpp"
-int base4[10] = { 3, 3, 3, 3, 4, 0, 1, 1, 4, 2 };
 class Adapter {
 	private:
 		char* num;
-		long l;
-                vector<short int>* states;
+		unsigned long l;
+		unsigned long mid;
+		std::string b_str;
+		std::string reverse_of_b_str;
 	public:
 		Adapter(char* num);
 		void convert();
-		vector<short int>* getStates();
+		unsigned long getMidPoint();
+		std::string getBinary();
+		std::string getReverseBinary();
 		~Adapter();
 };
 
 Adapter::Adapter(char* s) {
 	this->num = strdup(s);
 	this->l = strlen(s);
-	this->states = new vector<short int>[1];
+	this->mid = ceil(this->l / 2.0);
+}
+
+unsigned long Adapter::getMidPoint() {
+	return this->mid;
 }
 
 void Adapter::convert() {
-	for (int i = 0; i < this->l; ++i) {
-		this->states->push_back(base4[num[i] - '0']);
-	}
+	this->b_str = _bin_(this->num, 0);
+	this->reverse_of_b_str = _bin_(this->num, 1);
 }
 
-vector<short int>* Adapter::getStates() {
-	return states;
+std::string Adapter::getBinary() {
+	return this->b_str;
+}
+
+std::string Adapter::getReverseBinary() {
+	return this->reverse_of_b_str;
 }
 
 Adapter::~Adapter() {
 	free(this->num);
-	delete this->states;
 }
 #endif
