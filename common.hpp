@@ -7,6 +7,8 @@
 #include <iostream>
 #include <boost/lexical_cast.hpp>
 #include <vector>
+#include <algorithm>
+#include <gmp.h>
 using namespace std;
 using namespace boost;
 enum state_relation { _equal_, _lt_, _gt_, _nan_ };
@@ -37,6 +39,17 @@ short int _getStateRelation_(enum state_relation relation) {
 		       break;
 	}
         return -1;
+}
+
+std::string _bin_(unsigned long long int i) {
+     std::string ss = "";
+     while (i > 0) {
+	   int rz = i % 2;
+	   ss += boost::lexical_cast<std::string>(rz);
+	   i /= 2;
+     }
+     std::reverse(ss.begin(), ss.end());
+     return ss;
 }
 #endif
 
