@@ -10,7 +10,9 @@ int main(int argc, char* argv[]) {
 	mod->run();
 	std::string factor1 = mod->getFactor1();
 	std::string factor2 = mod->getFactor2();
-	cout << num << "\t=\t" << factor1 << "\tX\t" << factor2 << endl;
+	std::string factor1_in_decimal = _int_(factor1);
+	std::string factor2_in_decimal = _int_(factor2);
+	cout << num << "\t=\t" << factor1_in_decimal << "\tX\t" << factor2_in_decimal << endl;
 	free(num);
 	return 0;
 }

@@ -55,7 +55,7 @@ std::string _bin_(unsigned long acc) {
 		ss += boost::lexical_cast<std::string>(r);
 		acc /= 2;
 	}
-	std::reverse(ss.begin(), ss.end());
+//	std::reverse(ss.begin(), ss.end());
 	return ss;
 }
 
@@ -79,5 +79,26 @@ std::string _bin_(char* num, short int param) {
 	mpz_clear(rz);
 	return ss;
 }
-#endif
 
+std::string _int_(std::string __b) {
+	mpz_t prod;
+	mpz_init(prod);
+	mpz_set_ui(prod, 1);
+	mpz_t sum;
+	mpz_init(sum);
+	mpz_set_si(sum, 0);
+	mpz_t term;
+	mpz_init(term);
+	for (int i = __b.size() - 1; i >= 0; --i) {
+		short int bk = __b[i] - '0';
+                mpz_mul_ui(term, prod, bk);
+		mpz_add(sum, sum, term);
+		mpz_mul_ui(prod, prod, 2);
+	}
+	std::string _res_ = strdup(mpz_get_str(0, 10, sum));
+	mpz_clear(prod);
+	mpz_clear(sum);
+	mpz_clear(term);
+	return _res_;
+}
+#endif

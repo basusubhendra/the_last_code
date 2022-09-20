@@ -52,11 +52,28 @@ void Modulator::run() {
 			}
 		} else if (relation2 == 1 && relation1 == 2) {
 			if (this->binary_string2[reverse_number_index] == '0') {
-				_factor2_ += _bin_(accumulator_0_);
-				accumulator_0_ = 0;
+				if ((number_index == this->binary_string1.size()) && accumulator_1_ > 0) {
+					_factor2_ += _bin_(accumulator_0_ + accumulator_1_);
+					accumulator_1_ = accumulator_0_ = 0;
+					this->factor1 = _factor1_;
+					this->factor2 = _factor2_;
+					return;
+
+				} else {
+					_factor2_ += _bin_(accumulator_0_);
+					accumulator_0_ = 0;
+				}
 			} else {
-				_factor1_ += _bin_(accumulator_1_);
-				accumulator_1_ = 0;
+				if ((number_index == this->binary_string1.size()) && accumulator_0_ > 0) {
+					_factor1_ += _bin_(accumulator_0_ + accumulator_1_);
+					accumulator_1_ = accumulator_0_ = 0;
+					this->factor1 = _factor1_;
+					this->factor2 = _factor2_;
+					return;
+				} else {
+					_factor1_ += _bin_(accumulator_1_);
+					accumulator_1_ = 0;
+				}
 			}
 			reverse_number_index++;
 		}
