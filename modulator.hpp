@@ -35,7 +35,7 @@ void Modulator::run_micro_step() {
 	vector<unsigned long long int> markers;
 	vector<int> pi_pivots;
 	vector<int> e_pivots;
-	while ((idx % this->l != 0) && (idx > 0)) {
+	while (idx == 0 || ((idx % this->l != 0) && (idx > 0))) {
 		short int pp1 = modulation_strategy1[ctr] - '0';
 		short int ee1 = modulation_strategy2[ctr] - '0';
 		short int pp2 = modulation_strategy1[ctr + 1] - '0';
