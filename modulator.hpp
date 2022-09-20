@@ -42,11 +42,19 @@ void Modulator::run_micro_step() {
 				this->last_snippet = _bin_(interval);
 				intervening_counter = 0;
 				state = 0;
-				return;  
+				if (parity == 1) {
+					++interval;
+				} else {
+					return;
+				}
 			} else if ((this->parity == 1 && state == 1 && intervening_counter == 0) || (this->parity == 0 && state == 1 && intervening_counter > 0)) {
 				intervening_counter = 0;
 				state = 0;
-				++interval;
+				if (parity == 0) {
+					++interval;
+				} else {
+					return;
+				}
 			}
 			++ctr;
 			if (ctr == this->l) {
