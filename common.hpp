@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <boost/lexical_cast.hpp>
+#include <vector>
 using namespace std;
 using namespace boost;
 enum state_relation { _equal_, _lt_, _gt_, _nan_ };

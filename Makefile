@@ -8,7 +8,7 @@ INCLUDES = -I./
 factorize: intfact.cpp
 	@${CC} ${PROD} $< -o $@ ${INCLUDES}
 
-debug: intfact.cpp
+debug: intfact.cpp number.hpp adapter.hpp
 	@${CC} ${DEBUG} $< -o factorize ${INCLUDES}
 
 clean:
