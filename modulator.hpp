@@ -22,8 +22,8 @@ class Modulator {
 
 Modulator::Modulator(char* s, std::string _bin_, const char* pp, const char* ee, short int _parity_) {
 	this->num = strdup(s);
-	this->l = strlen(s);
 	this->binary_string1 = _bin_;
+	this->l = _bin_.size();
 	this->modulation_strategy1 = pp;
 	this->modulation_strategy2 = ee;
 	this->parity = _parity_;
@@ -42,8 +42,8 @@ void Modulator::run_micro_step() {
 		short int ee2 = modulation_strategy2[ctr + 1] - '0';
 		short int relation1 = _getStateRelation_(_deriveStateRelation_(pp1, pp2));
 		short int relation2 = _getStateRelation_(_deriveStateRelation_(ee1, ee2));
-		if (((relation1 == 2 && relation1 == 1 && this->binary_string1[idx % this->binary_string1.size()] == '0') 
-					|| (relation1 == 1 && relation2 == 2 && this->binary_string1[idx % this->binary_string1.size()] == '1')) && 
+		if (((relation1 == 2 && relation2 == 1 && (this->binary_string1[idx % this->l] == '0')) 
+					|| (relation1 == 1 && relation2 == 2 && (this->binary_string1[idx % this->l] == '1'))) && 
 				((this->parity == 0 && (pp1*10 + pp2) < (ee1*10 + ee2))
 				 || (this->parity == 1 && (pp1*10 + pp2) > (ee1*10 + ee2)))) {
 			markers.push_back(ctr);
@@ -53,6 +53,7 @@ void Modulator::run_micro_step() {
 		}
 		ctr += 2;
 	}
+	this->offset = ctr;
 	unsigned long long int last_ctr =  markers[markers.size() - 1];
 	unsigned long long int sz = last_ctr;
 	unsigned long long int first_ctr = 0;
