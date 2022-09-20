@@ -38,7 +38,7 @@ void Modulator::run() {
 	std::string _factor2_ = "";
 	unsigned long accumulator_1_ = 0;
 	unsigned long accumulator_0_ = 0;
-	while (1) {
+	while (number_index < this->binary_string1.size()) {
 		short int pp1 = modulation_strategy1[ctr] - '0';
 		short int pp2 = modulation_strategy1[ctr + 1] - '0';
 		short int ee1 = modulation_strategy2[ctr] - '0';
@@ -46,34 +46,18 @@ void Modulator::run() {
 		short int relation1 = _getStateRelation_(_deriveStateRelation_(pp1, pp2));
 		short int relation2 = _getStateRelation_(_deriveStateRelation_(ee1, ee2));
 		if (relation1 == 1 && relation2 == 2) {
-			if (this->binary_string1[number_index++] == '1') {
+			if (this->binary_string1[number_index % this->binary_string1.size()] == '1') {
 				++accumulator_1_;
 				++accumulator_0_;
 			}
+			++number_index;
 		} else if (relation2 == 1 && relation1 == 2) {
-			if (this->binary_string2[reverse_number_index] == '0') {
-				if ((number_index == this->binary_string1.size()) && accumulator_1_ > 0) {
-					_factor2_ += _bin_(accumulator_0_ + accumulator_1_);
-					accumulator_1_ = accumulator_0_ = 0;
-					this->factor1 = _factor1_;
-					this->factor2 = _factor2_;
-					return;
-
-				} else {
-					_factor2_ += _bin_(accumulator_0_);
-					accumulator_0_ = 0;
-				}
+			if (this->binary_string2[reverse_number_index % this->binary_string2.size()] == '0') {
+				_factor2_ += _bin_(accumulator_0_);
+				accumulator_0_ = 0;
 			} else {
-				if ((number_index == this->binary_string1.size()) && accumulator_0_ > 0) {
-					_factor1_ += _bin_(accumulator_0_ + accumulator_1_);
-					accumulator_1_ = accumulator_0_ = 0;
-					this->factor1 = _factor1_;
-					this->factor2 = _factor2_;
-					return;
-				} else {
-					_factor1_ += _bin_(accumulator_1_);
-					accumulator_1_ = 0;
-				}
+				_factor1_ += _bin_(accumulator_1_);
+				accumulator_1_ = 0;
 			}
 			reverse_number_index++;
 		}
